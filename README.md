@@ -1,4 +1,4 @@
-# Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements pdp-ibc-uq
+# Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements
 
 Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements (pdp-ibc-uq) is a regression model for the intrinsic bias correction and uncertainty quantification of mean velocity and turbulence intensity estimations obtained from dual-tip phase-detection probe measurements and AWCC \[[1](#References),[2](#References)\] processing.
 
