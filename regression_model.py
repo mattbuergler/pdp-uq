@@ -26,7 +26,8 @@ from quantile_forest import RandomForestQuantileRegressor
 
     Further, the model leverages a large of dataset of more than
     19,000 simulations of phase-detection probe measurements produced
-    with the [Stochastic Bubble Generator software](link_to_sbg_code).     
+    with the Phase-Detection Probe Simulator for Turbulent Bubbly 
+    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).     
 
 
     Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
@@ -57,7 +58,7 @@ def train_mean_velocity_model(hyperparameter_tuning=False):
         # Dataset for "Uncertainties in Measurements of Bubbly Flows Using Phase-Detection
         # Probes". ETH Zurich Research Collection. 
         # https://doig.org/10.3929/ethz-b-000664463.
-        
+
         dataset_url = "https://example.com/data.csv"
 
         download_csv(dataset_url, path_to_data)
