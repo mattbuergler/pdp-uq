@@ -1,93 +1,115 @@
-# pdp-ibc-uq
+# Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements pdp-ibc-uq
+
+Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements (pdp-ibc-uq) is a regression model for the intrinsic bias correction and uncertainty quantification of mean velocity and turbulence intensity estimations obtained from dual-tip phase-detection probe measurements and AWCC \[[1](#References),[2](#References)\] processing.
+
+The regression model is based on a quantile regression forest model \[[3](#References)\]. The regression model is a python script making use of the Python package [quantile-forest](https://github.com/zillow/quantile-forest) \[[4](#References)\]. 
+
+Further, the model leverages a large of dataset of more than 19,000 simulations of phase-detection probe measurements produced with the [Stochastic Bubble Generator software](https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git). 
 
 
+## Getting Started
 
-## Getting started
+### Prerequisites
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+pdp-ibc-uq requires the following dependencies:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- python==3.11.0
+- numpy==1.26.4
+- pandas==2.2.0
+- matplotlib==3.8.3
+- quantile-forest==1.3.2
+- scikit-learn==1.4.0
+- scipy==1.12.0
 
-## Add your files
+### Installation
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+To install pdp-ibc-uq, follow these steps:
 
-```
-cd existing_repo
-git remote add origin https://gitlab.ethz.ch/vaw/public/pdp-ibc-uq.git
-git branch -M main
-git push -uf origin main
-```
+1. Clone this repository to your local machine:
 
-## Integrate with your tools
+    ```bash
+    git clone https://gitlab.ethz.ch/vaw/public/pdp-ibc-uq.git
+    ```
 
-- [ ] [Set up project integrations](https://gitlab.ethz.ch/vaw/public/pdp-ibc-uq/-/settings/integrations)
+2. Navigate to the cloned directory:
 
-## Collaborate with your team
+    ```bash
+    cd pdp-ibc-uq
+    ```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+We recommend running pdp-ibc-uq in a virtual python environment using pipenv. The installation of pipenv is described in the [documentation](docs/user/setup_python_environment.md).
 
-## Test and Deploy
+3. Install the required dependencies using pipenv:
 
-Use the built-in continuous integration in GitLab.
+    ```bash
+    pipenv install
+    ```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+4. Activate the virtual environment:
 
-***
+    ```bash
+    pipenv shell
+    ```
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+5. You're ready to use pdp-ibc-uq!
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+
+### Data Format Requirements
+
+For the application of the model to your data, the data to be in specific format. More specifically, the data should be stored in a CSV-file. Further, the model requires the estimated mean velocities, the root mean quare velocity, the air concentration and the Sauter mean diameter of the air phase obtained from the AWCC processing as input data. The columns containing those values must have the following headings:
+
+|u [m/s]|u_rms [m/s]|c [-]|d_32a [m]|
+|-------|-----------|-----|---------|
+
+The Sauter mean diameter diameter can be calculated as $d_{32a} = 1.5\overline{u}c/F$, where $\overline{u}$ is the mean velocity (time-average), $c$ is the air concentration, and $F$ is the bubble frequency.
+
+
+### Bias Correction and Uncertainty Quantification of Measurements
+
+In order to run the regression model for the bias correction and uncertainty quantification of your phase-detection probe measurements, call the Python script `regression_model.py` with the necessary command-line arguments. The required command-line arguments are the streamwise tip separation `dx`, the lateral tip separation `dy`, the number of particles per window specified during the AWCC processing `Np` and the absolute or relative path to the file containing your measurements.
+
+```
+python3 emulator.py -dx 0.005 -dy 0.001 -Np 10 path/to/my_measurements.csv
+```
+
+The first time the regression model is run, it will train the quantile forest based on a large dataset of measurement errors from more than 19,000 simulations \[[5](#References)\]
+
+
+### Results
+
+The results will be written to a new file at path/to/my_measurements_uq.csv. The corrected mean velocities and turbulence intensities are written to columns labeled with 'u_corrected_qQUANTILE [m/s]' and 'T_u_corrected_qQUANTILE [-]', where 'QUANTILE' indicates the quantiles (0.1,0.25,0.5,0.75,0.9).
 
 ## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+For support, bug reports, or feature requests, please open an issue in the [issue tracker](https://gitlab.ethz.ch/vaw/multiphade/mpd/-/issues) or contact Matthias Bürgler at <buergler@vaw.baug.ethz.ch>.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+
+This software is developed by Matthias Bürgler in collaboration and under the supervision of Dr. Daniel Valero, Dr. Benjamin Hohermuth, Dr. David F. Vetsch and Prof. Dr. Robert M. Boes. Matthias Bürgler and Dr. Benjamin Hohermuth were supported by the Swiss National Science Foundation (SNSF) [grant number 197208].
+
+
+## Copyright notice
+
+Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth, David F. Vetsch, Robert M. Boes, D-BAUG, Laboratory of Hydraulics, Hydrology and Glaciology (VAW)
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## References
+
+[1] Kramer, M., Valero, D., Chanson, H., & Bung, D. B. (2019). Towards reliable turbulence estimations with phase-detection probes: an adaptive window cross-correlation technique. Experiments in Fluids, 60(1), 2.
+
+[2] Kramer, M., Hohermuth, B., Valero, D., & Felder, S. (2020). Best practices for velocity estimations in highly aerated flows with dual-tip phase-detection probes. International Journal of Multiphase Flow, 126, 103228.
+
+[3] Meinshausen, N., & Ridgeway, G. (2006). Quantile regression forests. Journal of Machine Learning Research, 7(6).
+
+[4] Johnson, R. A. (2024). quantile-forest: A Python Package for Quantile Regression Forests. Journal of Open Source Software, 9(93), 5976.
+
+[5] Bürgler, M., Valero, D., Hohermuth, B., Boes, R. M., \&  Vetsch, D. F. 2024a. Dataset for "Uncertainties in Measurements of Bubbly Flows Using Phase-Detection Probes". ETH Zurich Research Collection. https://doig.org/10.3929/ethz-b-000664463.
+
+## Citation
+
+If you use this package in academic work, please consider citing our work (tba).
