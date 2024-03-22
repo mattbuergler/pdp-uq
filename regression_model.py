@@ -9,6 +9,7 @@ import argparse
 import numpy as np
 import joblib
 import pandas as pd 
+import requests
 from quantile_forest import RandomForestQuantileRegressor
 
 
@@ -28,15 +29,39 @@ from quantile_forest import RandomForestQuantileRegressor
     with the [Stochastic Bubble Generator software](link_to_sbg_code).     
 
 
-    ©2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
+    Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
     Robert M. Boes, David F. Vetsch; Laboratory of Hydraulics, Hydrology
     and Glaciology (VAW); Chair of hydraulic structures
 
 """
 
+def download_csv(url, save_path):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        with open(save_path, 'wb') as file:
+            file.write(response.content)
+
+        print(f"CSV file downloaded successfully and saved as: {save_path}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading CSV file: {e}")
+
 def train_mean_velocity_model(hyperparameter_tuning=False):
     # set path to simulation results
     path_to_data = 'data/simulation_results.csv'
+    # check if the dataset of errors already exists, otherwise download it:
+    if not os.path.exists(path_to_data):
+        # Download the dataset from its original source:
+        # Bürgler, M., Valero, D., Hohermuth, B., Boes, R. M., \&  Vetsch, D. F. 2024a. 
+        # Dataset for "Uncertainties in Measurements of Bubbly Flows Using Phase-Detection
+        # Probes". ETH Zurich Research Collection. 
+        # https://doig.org/10.3929/ethz-b-000664463.
+        
+        dataset_url = "https://example.com/data.csv"
+
+        download_csv(dataset_url, path_to_data)
+
     # set columns for features and target
     feature_names = ['u_x_awcc','T_ux_awcc','c_real','d_bx_real','delta_x','delta_y','N_p']
     target_name = ['u_x_real']

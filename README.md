@@ -1,33 +1,61 @@
-# pdp-uq
+# Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements pdp-ibc-uq
 
-pdp-uq is a regression model for the intrinsic bias correction and uncertainty quantification of mean velocity and turbulence intensity estimations obtained from dual-tip phase-detection probe measurements and AWCC \[[1](#References),[2](#References)\] processing.
+Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements (pdp-ibc-uq) is a regression model for the intrinsic bias correction and uncertainty quantification of mean velocity and turbulence intensity estimations obtained from dual-tip phase-detection probe measurements and AWCC \[[1](#References),[2](#References)\] processing.
 
 The regression model is based on a quantile regression forest model \[[3](#References)\]. The regression model is a python script making use of the Python package [quantile-forest](https://github.com/zillow/quantile-forest) \[[4](#References)\]. 
 
-Further, the model leverages a large of dataset of more than 19,000 simulations of phase-detection probe measurements produced with the [Stochastic Bubble Generator software](link_to_sbg_code). 
+Further, the model leverages a large of dataset of more than 19,000 simulations of phase-detection probe measurements produced with the [Stochastic Bubble Generator software](https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git). 
 
 
-# Getting Started
+## Getting Started
 
-## Prerequisites
+### Prerequisites
 
-The pdp-uq requires the following dependencies:
+pdp-ibc-uq requires the following dependencies:
 
- * python (>= 3.8) 
- * numpy (>= 1.23) 
- * scikit-learn (>= 1.0) 
- * scipy (>= 1.4)
- * quantile-forest (>= 1.4)
+- python==3.11.0
+- numpy==1.26.4
+- pandas==2.2.0
+- matplotlib==3.8.3
+- quantile-forest==1.3.2
+- scikit-learn==1.4.0
+- scipy==1.12.0
 
-## Installation
+### Installation
 
-```
-python -m pip install --user --upgrade pdp-uq
-```
+To install pdp-ibc-uq, follow these steps:
 
-# User Guide
+1. Clone this repository to your local machine:
 
-## Data Format Requirements
+    ```bash
+    git clone https://gitlab.ethz.ch/vaw/public/pdp-ibc-uq.git
+    ```
+
+2. Navigate to the cloned directory:
+
+    ```bash
+    cd pdp-ibc-uq
+    ```
+
+We recommend running pdp-ibc-uq in a virtual python environment using pipenv. The installation of pipenv is described in the [documentation](docs/user/setup_python_environment.md).
+
+3. Install the required dependencies using pipenv:
+
+    ```bash
+    pipenv install
+    ```
+
+4. Activate the virtual environment:
+
+    ```bash
+    pipenv shell
+    ```
+
+5. You're ready to use pdp-ibc-uq!
+
+## Usage
+
+### Data Format Requirements
 
 For the application of the model to your data, the data to be in specific format. More specifically, the data should be stored in a CSV-file. Further, the model requires the estimated mean velocities, the root mean quare velocity, the air concentration and the Sauter mean diameter of the air phase obtained from the AWCC processing as input data. The columns containing those values must have the following headings:
 
@@ -37,21 +65,40 @@ For the application of the model to your data, the data to be in specific format
 The Sauter mean diameter diameter can be calculated as $d_{32a} = 1.5\overline{u}c/F$, where $\overline{u}$ is the mean velocity (time-average), $c$ is the air concentration, and $F$ is the bubble frequency.
 
 
-## Bias Correction and Uncertainty Quantification of Measurements
+### Bias Correction and Uncertainty Quantification of Measurements
 
-In order to run the regression model for the bias correction and uncertainty quantification of your phase-detection probe measurements, call the regression_model.py Python script with the necessary command-line arguments. The required command-line arguments are the streamwise tip separation `dx`, the lateral tip separation `dy`, the number of particles per window specified during the AWCC processing `Np` and the absolute or relative path to the file containing your measurements.
+In order to run the regression model for the bias correction and uncertainty quantification of your phase-detection probe measurements, call the Python script `regression_model.py` with the necessary command-line arguments. The required command-line arguments are the streamwise tip separation `dx`, the lateral tip separation `dy`, the number of particles per window specified during the AWCC processing `Np` and the absolute or relative path to the file containing your measurements.
 
 ```
 python3 emulator.py -dx 0.005 -dy 0.001 -Np 10 path/to/my_measurements.csv
 ```
 
+The first time the regression model is run, it will train the quantile forest based on a large dataset of measurement errors from more than 19,000 simulations \[[5](#References)\]
 
-## Results
+
+### Results
+
+The results will be written to a new file at path/to/my_measurements_uq.csv. The corrected mean velocities and turbulence intensities are written to columns labeled with 'u_corrected_qQUANTILE [m/s]' and 'T_u_corrected_qQUANTILE [-]', where 'QUANTILE' indicates the quantiles (0.1,0.25,0.5,0.75,0.9).
+
+## Support
+
+For support, bug reports, or feature requests, please open an issue in the [issue tracker](https://gitlab.ethz.ch/vaw/multiphade/mpd/-/issues) or contact Matthias Bürgler at <buergler@vaw.baug.ethz.ch>.
 
 
-'u [m/s]', 'T_u [-]', 'c [-]', 'd_32a [m]', 'delta_x [m]', 'delta_y [m]', 'N_p [-]'
+## Authors and acknowledgment
 
-# References
+This software is developed by Matthias Bürgler in collaboration and under the supervision of Dr. Daniel Valero, Dr. Benjamin Hohermuth, Dr. David F. Vetsch and Prof. Dr. Robert M. Boes. Matthias Bürgler and Dr. Benjamin Hohermuth were supported by the Swiss National Science Foundation (SNSF) [grant number 197208].
+
+
+## Copyright notice
+
+Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth, David F. Vetsch, Robert M. Boes, D-BAUG, Laboratory of Hydraulics, Hydrology and Glaciology (VAW)
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## References
 
 [1] Kramer, M., Valero, D., Chanson, H., & Bung, D. B. (2019). Towards reliable turbulence estimations with phase-detection probes: an adaptive window cross-correlation technique. Experiments in Fluids, 60(1), 2.
 
@@ -61,3 +108,8 @@ python3 emulator.py -dx 0.005 -dy 0.001 -Np 10 path/to/my_measurements.csv
 
 [4] Johnson, R. A. (2024). quantile-forest: A Python Package for Quantile Regression Forests. Journal of Open Source Software, 9(93), 5976.
 
+[5] Bürgler, M., Valero, D., Hohermuth, B., Boes, R. M., \&  Vetsch, D. F. 2024a. Dataset for "Uncertainties in Measurements of Bubbly Flows Using Phase-Detection Probes". ETH Zurich Research Collection. https://doig.org/10.3929/ethz-b-000664463.
+
+## Citation
+
+If you use this package in academic work, please consider citing our work (tba).
