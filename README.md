@@ -62,7 +62,7 @@ For the application of the model to your data, the data to be in specific format
 |u [m/s]|u_rms [m/s]|c [-]|d_32a [m]|
 |-------|-----------|-----|---------|
 
-The Sauter mean diameter diameter can be calculated as $d_{32a} = 1.5\overline{u}c/F$, where $\overline{u}$ is the mean velocity (time-average), $c$ is the air concentration, and $F$ is the bubble frequency.
+The Sauter mean diameter diameter can be calculated as $d_{32a} = 1.5\overline{u}c/F$, where $\overline{u}$ is the mean velocity (time-average), $c$ is the air concentration, and $F$ is the bubble frequency (number of bubbles per unit of time).
 
 
 ### Bias Correction and Uncertainty Quantification of Measurements
