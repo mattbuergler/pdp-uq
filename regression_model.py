@@ -3,7 +3,6 @@
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 import os
-import sys
 import time
 import argparse
 import numpy as np
@@ -11,6 +10,7 @@ import joblib
 import pandas as pd 
 import requests
 from quantile_forest import RandomForestQuantileRegressor
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 
 
 """
@@ -48,7 +48,7 @@ def download_csv(url, save_path):
     except requests.exceptions.RequestException as e:
         print(f"Error downloading CSV file: {e}")
 
-def train_mean_velocity_model(hyperparameter_tuning=False):
+def train_model(target_name):
     # set path to simulation results
     path_to_data = 'data/simulation_results.csv'
     # check if the dataset of errors already exists, otherwise download it:
@@ -65,7 +65,6 @@ def train_mean_velocity_model(hyperparameter_tuning=False):
 
     # set columns for features and target
     feature_names = ['u_x_awcc','T_ux_awcc','c_real','d_bx_real','delta_x','delta_y','N_p']
-    target_name = ['u_x_real']
 
     # load and prep data
     df = pd.read_csv(path_to_data, index_col=None)
@@ -76,71 +75,14 @@ def train_mean_velocity_model(hyperparameter_tuning=False):
 
     # create array for features and target
     features = df[feature_names].to_numpy()
-    target = df[target_name].to_numpy()
+    target = df[[target_name]].to_numpy()
     target = target.reshape((len(target),))
 
-    if hyperparameter_tuning:
-        qrf = RandomForestQuantileRegressor(random_state=0)
-        ### hyperparameter tuning using cross-validation for single output regressor
-        param_grid = {
-            'n_estimators': [200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400],
-            'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-            'max_features': [0.1, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-        }
-        qrf_tuning = RandomizedSearchCV(qrf, param_grid, n_iter=300, cv=5, n_jobs=8, verbose=2, scoring='neg_root_mean_squared_error')
-        print("Best parameters:", qrf_tuning.best_params_)
-        print(f"Best score (neg_root_mean_squared_error): {qrf_tuning.best_score_} m/s")
-        best_qrf = qrf_tuning.best_estimator_
-        best_rf.fit(features, target)
-    else:
-        # Use best score model:
-        # Best parameters: {'n_estimators': 3400, 'max_features': 0.8, 'max_depth': 20}
-        # Best score (neg_root_mean_squared_error): -0.03715324437297397
-        best_rf = RandomForestQuantileRegressor(random_state=0, n_estimators=3400, max_features=0.8, max_depth=20)
-        best_rf.fit(features, target)
+    # limit max depth to prevent over-fitting
+    qrf_model = RandomForestQuantileRegressor(random_state=0, max_depth=12)
+    qrf_model.fit(features, target)
     # save
-    joblib.dump(best_rf, "data/qrf_mean_velocity_model.joblib")
-
-def train_turbulence_intensity_model(hyperparameter_tuning=False):
-    # set path to simulation results
-    path_to_data = 'data/simulation_results.csv'
-    # set columns for features and target
-    feature_names = ['u_x_awcc','T_ux_awcc','c_real','d_bx_real','delta_x','delta_y','N_p']
-    target_name = ['T_ux_real']
-
-    # load and prep data
-    df = pd.read_csv(path_to_data, index_col=None)
-
-    df = df[df['n_awcc'] > 100]
-    df = df[~df['u_x_awcc'].isna()]
-    df = df[~df['T_ux_awcc'].isna()]
-
-    # create array for features and target
-    features = df[feature_names].to_numpy()
-    target = df[target_name].to_numpy()
-    target = target.reshape((len(target),))
-
-    if hyperparameter_tuning:
-        qrf = RandomForestQuantileRegressor(random_state=0)
-        ### hyperparameter tuning using cross-validation for single output regressor
-        param_grid = {
-            'n_estimators': [200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400],
-            'max_depth': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-            'max_features': [0.1, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-        }
-        qrf_tuning = RandomizedSearchCV(qrf, param_grid, n_iter=300, cv=5, n_jobs=8, verbose=2, scoring='neg_root_mean_squared_error')
-        print("Best parameters:", qrf_tuning.best_params_)
-        print(f"Best score (neg_root_mean_squared_error): {qrf_tuning.best_score_}")
-        best_qrf = qrf_tuning.best_estimator_
-        best_rf.fit(features, target)
-    else:
-        # Use best score model:
-        # Best parameters: {'n_estimators': 3400, 'max_features': 0.8, 'max_depth': 20}
-        # Best score (neg_root_mean_squared_error): -0.03715324437297397
-        best_rf = RandomForestQuantileRegressor(random_state=0, n_estimators=3400, max_features=0.8, max_depth=20)
-        best_rf.fit(features, target)
-    # save
-    joblib.dump(best_rf, "data/qrf_turbulence_intensity_model.joblib")
+    joblib.dump(qrf_model, f"data/qrf_model_{'_'.join(target_name.split('_', 2)[:2])}.joblib")
 
 def get_valid_range(column_name):
     if column_name == "u [m/s]":
@@ -163,7 +105,7 @@ def get_valid_range(column_name):
 def main(dx, dy, Np, path_to_file):
     t0 = time.time()
     # Define the quantiles
-    quantiles = [0.1,0.25,0.5,0.75,0.9]
+    quantiles = [0.025,0.05,0.1,0.25,0.5,0.75,0.9,0.95,0.975]
     # Define the expected column names
     expected_data_columns = ["u [m/s]", "u_rms [m/s]", "c [-]", "d_32a [m]"]
 
@@ -192,34 +134,34 @@ def main(dx, dy, Np, path_to_file):
     rf_feature_columns = ['u [m/s]', 'T_u [-]', 'c [-]', 'd_32a [m]', 'delta_x [m]', 'delta_y [m]', 'N_p [-]']
 
     # Check if trained model already exists, or if model must be trained first
-    if os.path.isfile("data/qrf_mean_velocity_model.joblib"):
+    if os.path.isfile("data/qrf_model_u_x.joblib"):
         # model exists, we can directly apply it
         pass
     else:
         # model does not exists, we must first train it
         print("\nThe regression model for mean velocity bias correction is run for the first time. This will require some time to train the model.")
         t1 = time.time()
-        train_mean_velocity_model()
+        train_model('u_x_real')
         print(f"\nFinished training the model in {(time.time()-t1)/60:.1f} minutes.")
 
     # Check if trained model already exists, or if model must be trained first
-    if os.path.isfile("data/qrf_turbulence_intensity_model.joblib"):
+    if os.path.isfile("data/qrf_model_T_ux.joblib"):
         # model exists, we can directly apply it
         pass
     else:
         # model does not exists, we must first train it
         print("\nThe regression model for turbulence intensity bias correction is run for the first time. This will require some time to train the model.")
         t1 = time.time()
-        train_turbulence_intensity_model()
+        train_model('T_ux_real')
         print(f"\nFinished training the model in {(time.time()-t1)/60:.1f} minutes.")
 
     print(f"\nApplying the models to data in the file '{path_to_file}'.")
     # Load the trained quantile random forest to predict corrected mean velocities and uncertainties
-    qrf_u = joblib.load("data/qrf_mean_velocity_model.joblib")
+    qrf_u = joblib.load("data/qrf_model_u_x.joblib")
     pred_u = qrf_u.predict(data[rf_feature_columns].to_numpy(), quantiles=quantiles)
 
     # Load the trained quantile random forest to predict corrected turbulence intensities and uncertainties
-    qrf_T_u = joblib.load("data/qrf_turbulence_intensity_model.joblib")
+    qrf_T_u = joblib.load("data/qrf_model_T_ux.joblib")
     pred_Tu = qrf_T_u.predict(data[rf_feature_columns].to_numpy(), quantiles=quantiles)
 
     # Check for each column in data if the values are in the valid range
@@ -259,8 +201,8 @@ if __name__ == "__main__":
     parser.add_argument("-Np", type=int, help="Number of particles per averaging window [-]")
     parser.add_argument("path_to_file", type=str, help="Path to the CSV data file")
 
+
     # Parse the arguments
     args = parser.parse_args()
- 
     # Call the main function with parsed arguments
     main(args.dx, args.dy, args.Np, args.path_to_file)
