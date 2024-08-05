@@ -101,7 +101,7 @@ python3 tools/plot_results.py example/pdp_data_uq.csv
 
 This produces the following figure:
 
-![Corrected mean velocitiy and turbulence intensity profile, including median values, the interquartile range (IQR) and the 90% confidence interval (CI).](https://gitlab.ethz.ch/vaw/public/pdp-ibc-uq/-/blob/main/docs/application_example/profiles_uq.png)
+![Corrected mean velocitiy and turbulence intensity profile, including median values, the interquartile range (IQR) and the 90% confidence interval (CI).](/docs/application_example/profiles_uq.png?raw=true)
 
 
 
