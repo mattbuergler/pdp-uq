@@ -70,7 +70,7 @@ The Sauter mean diameter diameter can be calculated as $d_{32a} = 1.5\overline{u
 In order to run the regression model for the bias correction and uncertainty quantification of your phase-detection probe measurements, call the Python script `regression_model.py` with the necessary command-line arguments. The required command-line arguments are the streamwise tip separation `dx`, the lateral tip separation `dy`, the number of particles per window specified during the AWCC processing `Np` and the absolute or relative path to the file containing your measurements.
 
 ```
-python3 emulator.py -dx 0.005 -dy 0.001 -Np 10 path/to/my_measurements.csv
+python3 regression_model.py -dx 0.005 -dy 0.001 -Np 10 path/to/my_measurements.csv
 ```
 
 The first time the regression model is run, it will train the quantile forest based on a large dataset of measurement errors from more than 19,000 simulations \[[5](#References)\]
@@ -78,7 +78,32 @@ The first time the regression model is run, it will train the quantile forest ba
 
 ### Results
 
-The results will be written to a new file at path/to/my_measurements_uq.csv. The corrected mean velocities and turbulence intensities are written to columns labeled with 'u_corrected_qQUANTILE [m/s]' and 'T_u_corrected_qQUANTILE [-]', where 'QUANTILE' indicates the quantiles (0.1,0.25,0.5,0.75,0.9).
+The results will be written to a new file at path/to/my_measurements_uq.csv. The corrected mean velocities and turbulence intensities are written to columns labeled with 'u_corrected_qQUANTILE [m/s]' and 'T_u_corrected_qQUANTILE [-]', where 'QUANTILE' indicates the quantiles (0.025,0.05,0.1,0.25,0.5,0.75,0.9,0.95,0.975).
+
+
+## Application example
+
+This section explains how to apply the regression model to actual dual-tip phase-detection probe measurements. The measurements correspond to an invert-normal profile obtained on a laboratory scale spillway model and are located in [example/pdp_data.csv](example/pdp_data.csv). The file contains estimated mean velocities, the root mean quare velocities, air concentrations and the Sauter mean diameters of the air phase obtained from the AWCC processing the phase-detection probe signal. The dual-tip phase-detection probe used for the measurements has a streamwise tip separation of 0.00452 m and a lateral tip separation of 0.00092 m. Further, the AWCC algorithm was applied with 10 particles per window ($N_p$ = 10).
+
+With the following command, the regression model is applied to the measurements:
+
+```
+python3 regression_model.py -dx 0.00452 -dy 0.00092 -Np 10 example/pdp_data.csv
+```
+
+The corrected mean velocites and turbulent intensities are written to the file `example/pdp_data_uq.csv`.
+
+The [measurement](example/pdp_data.csv) contain an additional column for the invert-normal distance 'z [m]'. This allows to visuzalize the results with the python script [tools/plot_results.py](tools/plot_results.py): 
+
+```
+python3 tools/plot_results.py example/pdp_data_uq.csv
+```
+
+This produces the following figure:
+
+![Corrected mean velocitiy and turbulence intensity profile, including median values, the interquartile range (IQR) and the 90% confidence interval (CI).](https://gitlab.ethz.ch/vaw/public/pdp-ibc-uq/-/blob/main/docs/application_example/profiles_uq.png)
+
+
 
 ## Support
 
