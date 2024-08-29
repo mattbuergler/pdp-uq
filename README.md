@@ -2,7 +2,7 @@
 
 Intrinsic Bias Correction and Uncertainty Quantification of Phase-Detection Probe Measurements (pdp-uq) is a regression model for the intrinsic bias correction and uncertainty quantification of mean velocity and turbulence intensity estimations obtained from dual-tip phase-detection probe measurements and Adaptive Window Cross-Correlation (AWCC) ([Kramer et al. 2019](#References); [2020](#References)) processing. The model is presented in the peer-review article of [Bürgler et al. 2024c](#References).
 
-The regression model is based on a quantile regression forest model ([Meinshausen & Ridgeway2006](#References)). The regression model is a python script making use of the Python package [quantile-forest](https://github.com/zillow/quantile-forest) ([Johnson 2024](#References)). 
+The regression model is based on a quantile regression forest model ([Meinshausen & Ridgeway 2006](#References)). The regression model is a python script making use of the Python package [quantile-forest](https://github.com/zillow/quantile-forest) ([Johnson 2024](#References)). 
 
 Further, the model leverages a large of dataset of more than 19,000 simulations of phase-detection probe measurements ([Büergler et al. 2024a](#References)) produced with the [Phase-Detection Probe Simulator for Turbulent Bubbly Flows](https://gitlab.ethz.ch/vaw/public/pdp-sim.git) ([Bürgler et al. 2024b](#References)). 
 
