@@ -14,12 +14,15 @@ Further, the model leverages a large of dataset of more than 19,000 simulations 
 pdp-uq requires the following dependencies:
 
 - python==3.11.0
-- numpy==1.26.4
-- pandas==2.2.0
-- matplotlib==3.8.3
-- quantile-forest==1.3.2
-- scikit-learn==1.4.0
-- scipy==1.12.0
+- numpy==2.1.1
+- pandas==2.2.2
+- matplotlib==3.9.2
+- quantile-forest==1.3.10
+- scikit-learn==1.5.1
+- scipy==1.14.1
+- requests==2.32.3
+- joblib==1.4.2
+
 
 ### Installation
 
@@ -37,7 +40,7 @@ To install pdp-uq, follow these steps:
     cd pdp-uq
     ```
 
-We recommend running pdp-uq in a virtual python environment using pipenv. The installation of pipenv is described in the [documentation](docs/python_env/setup_python_environment.md).
+We recommend running pdp-uq in a virtual python environment using pipenv. How to setup the python environmetn including the installation of pipenv is described in the [documentation](docs/python_env/setup_python_environment.md).
 
 3. Install the required dependencies using pipenv:
 
