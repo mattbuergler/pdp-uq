@@ -49,7 +49,7 @@ pip install pipenv
 ### Install Python 3.11.0
 
 Install Python from here:
-https://www.python.org/downloads/release/python-390/
+https://www.python.org/downloads/release/python-3110/
 
 ### Install *pyenv*
 In the command prompt run:
