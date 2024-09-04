@@ -1,7 +1,7 @@
 import os
 import argparse
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -14,12 +14,12 @@ import matplotlib.pyplot as plt
     The regression model is based on a quantile regression forest
     model. The regression model is a python script making use of
     the Python package quantile-forest developed and distribute by
-    zillow on https://github.com/zillow/quantile-forest. 
+    zillow on https://github.com/zillow/quantile-forest.
 
     Further, the model leverages a large of dataset of more than
     19,000 simulations of phase-detection probe measurements produced
-    with the Phase-Detection Probe Simulator for Turbulent Bubbly 
-    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).     
+    with the Phase-Detection Probe Simulator for Turbulent Bubbly
+    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).
 
 
     Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
@@ -36,22 +36,22 @@ def plot_profiles(data, directory):
     plt.rcParams['mathtext.fontset'] = 'cm'
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 2.4))
-    ax1.plot(data['u [m/s]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='-',marker='.',color='k',label='awcc')
-    ax1.plot(data['u_corrected_q0.5 [m/s]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='--',marker='.',color='b',label='corr. (median)')
+    ax1.plot(data['u [m/s]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='-',marker='.',color='k',label='AWCC')
+    ax1.plot(data['u_corrected_q0.5 [m/s]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='--',marker='.',color='b',label='Model median')
     ax1.fill_betweenx(data['z [m]'].to_numpy(),data['u_corrected_q0.25 [m/s]'], data['u_corrected_q0.75 [m/s]'], color='b', alpha=0.3, label='IQR')
     # ax1.fill_betweenx(data['z [m]'].to_numpy(),data['u_corrected_q0.1 [m/s]'], data['u_corrected_q0.9 [m/s]'], color='b', alpha=0.1, label='80%-CI')
-    ax1.fill_betweenx(data['z [m]'].to_numpy(),data['u_corrected_q0.05 [m/s]'], data['u_corrected_q0.95 [m/s]'], color='b', alpha=0.1, label='90%-CI')
+    ax1.fill_betweenx(data['z [m]'].to_numpy(),data['u_corrected_q0.05 [m/s]'], data['u_corrected_q0.95 [m/s]'], color='b', alpha=0.1, label='Model 90%-CI')
     # ax1.fill_betweenx(data['z [m]'].to_numpy(),data['u_corrected_q0.025 [m/s]'], data['u_corrected_q0.975 [m/s]'], color='b', alpha=0.1, label='95%-CI')
     ax1.set_xlabel('$\overline{u}_x$ [m/s]')
     ax1.set_ylabel('$z$ [m]')
     ax1.set_xlim([0,1.1*max(np.nanmax(data['u [m/s]'].to_numpy()),np.nanmax(data['u_corrected_q0.9 [m/s]'].to_numpy()))])
     ax1.set_ylim([0,1.1*np.nanmax(data['z [m]'].to_numpy())])
     ax1.text(0.05*ax1.get_xlim()[1],0.05*ax1.get_ylim()[1],'(a)')
-    ax2.plot(data['T_u [-]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='-',marker='.',color='k',label='awcc')
-    ax2.plot(data['T_u_corrected_q0.5 [-]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='--',marker='.',color='b',label='corr. (median)')
-    ax2.fill_betweenx(data['z [m]'].to_numpy(),data['T_u_corrected_q0.25 [-]'], data['T_u_corrected_q0.75 [-]'], color='b', alpha=0.3, label='IQR')
+    ax2.plot(data['T_u [-]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='-',marker='.',color='k',label='AWCC')
+    ax2.plot(data['T_u_corrected_q0.5 [-]'].to_numpy(),data['z [m]'].to_numpy(),fillstyle='none',linestyle='--',marker='.',color='b',label='Model median')
+    ax2.fill_betweenx(data['z [m]'].to_numpy(),data['T_u_corrected_q0.25 [-]'], data['T_u_corrected_q0.75 [-]'], color='b', alpha=0.3, label='Model IQR')
     # ax2.fill_betweenx(data['z [m]'].to_numpy(),data['T_u_corrected_q0.1 [-]'], data['T_u_corrected_q0.9 [-]'], color='b', alpha=0.1, label='80%-CI')
-    ax2.fill_betweenx(data['z [m]'].to_numpy(),data['T_u_corrected_q0.05 [-]'], data['T_u_corrected_q0.95 [-]'], color='b', alpha=0.1, label='90%-CI')
+    ax2.fill_betweenx(data['z [m]'].to_numpy(),data['T_u_corrected_q0.05 [-]'], data['T_u_corrected_q0.95 [-]'], color='b', alpha=0.1, label='Model 90%-CI')
     # ax2.fill_betweenx(data['z [m]'].to_numpy(),data['T_u_corrected_q0.025 [-]'], data['T_u_corrected_q0.975 [-]'], color='b', alpha=0.1, label='95%-CI')
     ax2.set_xlabel('$\mathrm{T}_{u,x}$ [m/s]')
     ax2.set_ylabel('$z$ [m]')
@@ -65,6 +65,7 @@ def plot_profiles(data, directory):
     ax2.grid(True)
     fig.savefig(f'{directory}/profiles_uq.png')
     fig.savefig(f'{directory}/profiles_uq.pdf')
+    fig.savefig(f'{directory}/profiles_uq.svg')
     plt.close()
 
 def main(path_to_file):

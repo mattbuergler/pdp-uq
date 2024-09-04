@@ -3,7 +3,7 @@
 import os
 import time
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import requests
 import matplotlib
 import matplotlib.pyplot as plt
@@ -25,12 +25,12 @@ except ImportError:
     The regression model is based on a quantile regression forest
     model. The regression model is a python script making use of
     the Python package quantile-forest developed and distribute by
-    zillow on https://github.com/zillow/quantile-forest. 
+    zillow on https://github.com/zillow/quantile-forest.
 
     Further, the model leverages a large of dataset of more than
     19,000 simulations of phase-detection probe measurements produced
-    with the Phase-Detection Probe Simulator for Turbulent Bubbly 
-    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).     
+    with the Phase-Detection Probe Simulator for Turbulent Bubbly
+    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).
 
 
     Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
@@ -57,9 +57,9 @@ def train_model(target_name,awcc_target_name):
     # check if the dataset of errors already exists, otherwise download it:
     if not os.path.exists(path_to_data):
         # Download the dataset from its original source:
-        # Bürgler, M., Valero, D., Hohermuth, B., Boes, R. M., \&  Vetsch, D. F. 2024a. 
+        # Bürgler, M., Valero, D., Hohermuth, B., Boes, R. M., \&  Vetsch, D. F. 2024a.
         # Dataset for "Uncertainties in Measurements of Bubbly Flows Using Phase-Detection
-        # Probes". ETH Zurich Research Collection. 
+        # Probes". ETH Zurich Research Collection.
         # https://doig.org/10.3929/ethz-b-000664463.
 
         dataset_url = "https://example.com/data.csv"
@@ -129,7 +129,8 @@ def main():
     tar_train, pred_train, tar_test, pred_test, pred_awcc_test, rmse_test, rmse_train, rmse_awcc_test, rmse_awcc_train = train_model('u_x_real','u_x_awcc')
     min_val = 0.0
     max_val = 50.0
-    axs[0,0].scatter(tar_train, pred_train, alpha=0.1, c='blue',label='Model')
+    alpha_value = 0.2
+    axs[0,0].scatter(tar_train, pred_train, alpha=alpha_value, c='blue',edgecolors='none',label='Model')
     axs[0,0].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[0,0].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[0,0].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
@@ -140,11 +141,11 @@ def main():
     axs[0,0].set_ylim([min_val,max_val])
     axs[0,0].text(0.05*max_val,0.95*max_val,f'$\mathbf{{Training}}$\n$RMSE_{{pred}}$ = {rmse_train:.2f} ms$^{{1}}$',verticalalignment='top')
     # axs[0,0].legend(loc=4,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
-    axs[0,0].annotate('(a)', xy=(0.95, 0.05), xycoords='axes fraction', 
+    axs[0,0].annotate('(a)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
 
-    axs[0,1].scatter(tar_test, pred_test, alpha=0.1, c='blue',label='Model')
-    axs[0,1].scatter(tar_test, pred_awcc_test, alpha=0.1, c='red',label='AWCC')
+    axs[0,1].scatter(tar_test, pred_test, alpha=alpha_value, c='blue',edgecolors='none',label='Model')
+    axs[0,1].scatter(tar_test, pred_awcc_test, alpha=alpha_value,edgecolors='none', c='red',label='AWCC')
     axs[0,1].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[0,1].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[0,1].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
@@ -156,13 +157,13 @@ def main():
     # axs[0,1].text(0.1*max_val,0.8*max_val,f'')
     axs[0,1].grid(True)
     # axs[0,1].legend(loc=4,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
-    axs[0,1].annotate('(b)', xy=(0.95, 0.05), xycoords='axes fraction', 
+    axs[0,1].annotate('(b)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
 
     tar_train, pred_train, tar_test, pred_test, pred_awcc_test, rmse_test, rmse_train, rmse_awcc_test, rmse_awcc_train = train_model('T_ux_real','T_ux_awcc')
     min_val = 0.0
     max_val = 0.4
-    axs[1,0].scatter(tar_train, pred_train, alpha=0.1, c='blue',label='Model')
+    axs[1,0].scatter(tar_train, pred_train, alpha=alpha_value, c='blue',edgecolors='none',label='Model')
     axs[1,0].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[1,0].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[1,0].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
@@ -173,16 +174,16 @@ def main():
     axs[1,0].set_ylim([min_val,0.8])
     axs[1,0].text(0.05*max_val,0.95*0.8,f'$\mathbf{{Training}}$\n$RMSE_{{pred}}$ = {rmse_train:.3f}',verticalalignment='top')
     # axs[1,0].legend(loc=1,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
-    axs[1,0].annotate('(c)', xy=(0.95, 0.05), xycoords='axes fraction', 
+    axs[1,0].annotate('(c)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
 
-    axs[1,1].scatter(tar_test, pred_test, alpha=0.1, c='blue')
-    axs[1,1].scatter(tar_test, pred_awcc_test, alpha=0.1, c='red')
+    axs[1,1].scatter(tar_test, pred_test, alpha=alpha_value, c='blue',edgecolors='none')
+    axs[1,1].scatter(tar_test, pred_awcc_test, alpha=alpha_value, c='red',edgecolors='none')
     axs[1,1].plot([min_val, max_val], [min_val, max_val], 'k-')
     axs[1,1].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--')
     axs[1,1].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
-    axs[1,1].scatter([],[], alpha=1.0, c='blue',label='Model')
-    axs[1,1].scatter([],[], alpha=1.0, c='red',label='AWCC')
+    axs[1,1].scatter([],[], alpha=0.8, c='blue',label='Model')
+    axs[1,1].scatter([],[], alpha=0.8, c='red',label='AWCC')
     axs[1,1].plot([], [], 'k-', label='Perfect pred.')
     axs[1,1].plot([], [], 'k--', label='$\pm$ 10% Error')
     axs[1,1].set_xlabel('$\mathrm{T}_{u,x,real}$ [-]')
@@ -193,12 +194,59 @@ def main():
     # axs[1,1].text(0.1*max_val,0.8*0.8,f'')
     axs[1,1].grid(True)
     axs[1,1].legend(loc=1,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
-    axs[1,1].annotate('(d)', xy=(0.95, 0.05), xycoords='axes fraction', 
+    axs[1,1].annotate('(d)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
     plt.tight_layout()
     fig.savefig(f"../docs/validation/regression_model_validation.pdf")
     fig.savefig(f"../docs/validation/regression_model_validation.png")
+    fig.savefig(f"../docs/validation/regression_model_validation.svg")
+    fig.savefig(f"../docs/validation/regression_model_validation.jpeg",dpi=1200)
 
+
+    fig, axs = plt.subplots(1, 2, figsize=(6.5,3))
+    # fig.subplots_adjust(hspace=0.4, wspace=0.4)
+
+    tar_train, pred_train, tar_test, pred_test, pred_awcc_test, rmse_test, rmse_train, rmse_awcc_test, rmse_awcc_train = train_model('u_x_real','u_x_awcc')
+    min_val = 0.0
+    max_val = 50.0
+
+    axs[0].scatter(tar_test, pred_test, alpha=0.1, c='blue',label='Model')
+    axs[0].scatter(tar_test, pred_awcc_test, alpha=0.1, c='red',label='AWCC')
+    axs[0].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
+    axs[0].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
+    axs[0].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
+    axs[0].set_xlabel('$\overline{u}_{x,real}$ [m s$^{-1}$]')
+    axs[0].set_ylabel('$\overline{u}_{x,awcc}$ or $\overline{u}_{x,pred}$ [m s$^{-1}$]')
+    axs[0].set_xlim([min_val,max_val])
+    axs[0].set_ylim([min_val,max_val])
+    axs[0].text(0.05*max_val,0.95*max_val,f'$\mathbf{{Testing}}$\n$RMSE_{{pred}}$ = {rmse_test:.2f} ms$^{{1}}$\n$RMSE_{{awcc}}$ = {rmse_awcc_test:.2f} ms$^{{1}}$',verticalalignment='top')
+    # axs[0].text(0.1*max_val,0.8*max_val,f'')
+    axs[0].grid(True)
+    # axs[0].legend(loc=4,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
+    tar_train, pred_train, tar_test, pred_test, pred_awcc_test, rmse_test, rmse_train, rmse_awcc_test, rmse_awcc_train = train_model('T_ux_real','T_ux_awcc')
+    min_val = 0.0
+    max_val = 0.4
+    axs[1].scatter(tar_test, pred_test, alpha=0.1, c='blue')
+    axs[1].scatter(tar_test, pred_awcc_test, alpha=0.1, c='red')
+    axs[1].plot([min_val, max_val], [min_val, max_val], 'k-')
+    axs[1].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--')
+    axs[1].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
+    axs[1].scatter([],[], alpha=1.0, c='blue',label='Model')
+    axs[1].scatter([],[], alpha=1.0, c='red',label='AWCC')
+    axs[1].plot([], [], 'k-', label='Perfect pred.')
+    axs[1].plot([], [], 'k--', label='$\pm$ 10% Error')
+    axs[1].set_xlabel('$\mathrm{T}_{u,x,real}$ [-]')
+    axs[1].set_ylabel('$\mathrm{T}_{u,x,awcc}$ or $\mathrm{T}_{u,x,pred}$ [-]')
+    axs[1].set_xlim([min_val,max_val])
+    axs[1].set_ylim([min_val,0.8])
+    axs[1].text(0.05*max_val,0.95*0.8,f'$\mathbf{{Testing}}$\n$RMSE_{{pred}}$ = {rmse_test:.3f}\n$RMSE_{{awcc}}$ = {rmse_awcc_test:.3f}',verticalalignment='top')
+    # axs[1].text(0.1*max_val,0.8*0.8,f'')
+    axs[1].grid(True)
+    axs[1].legend(loc=1,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
+    plt.tight_layout()
+    fig.savefig(f"../docs/validation/regression_model_validation_graphical_abstract.pdf")
+    fig.savefig(f"../docs/validation/regression_model_validation_graphical_abstract.png")
+    fig.savefig(f"../docs/validation/regression_model_validation_graphical_abstract.svg")
 
     print(f'\nFinished in {(time.time()-t0)/60.0:.1f} minutes.')
 
