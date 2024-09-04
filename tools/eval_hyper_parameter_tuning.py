@@ -2,20 +2,12 @@
 # -*- coding: utf-8 -*-
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-import os
-import sys
 import time
-import argparse
-import numpy as np
-import joblib
-import pandas as pd 
-import requests
-import matplotlib.pyplot as plt
 import pathlib
-from quantile_forest import RandomForestQuantileRegressor
-from sklearn.model_selection import RandomizedSearchCV, train_test_split
-from matplotlib import cm
+import numpy as np
+import pandas as pd 
 import matplotlib
+import matplotlib.pyplot as plt
 
 
 """
@@ -27,12 +19,12 @@ import matplotlib
     The regression model is based on a quantile regression forest
     model. The regression model is a python script making use of
     the Python package quantile-forest developed and distribute by
-    zillow on https://github.com/zillow/quantile-forest. 
+    zillow on https://github.com/zillow/quantile-forest.
 
     Further, the model leverages a large of dataset of more than
     19,000 simulations of phase-detection probe measurements produced
-    with the Phase-Detection Probe Simulator for Turbulent Bubbly 
-    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).     
+    with the Phase-Detection Probe Simulator for Turbulent Bubbly
+    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim.git).
 
 
     Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
@@ -78,7 +70,7 @@ def main():
 
     path = pathlib.Path('../docs/hyperparameter_tuning')
     parameters = ['n_estimators','max_depth','max_features']
-    target_names = ['u_x_real', 'T_ux_real']
+    target_names = ['u_x_real [m/s]', 'T_ux_real [-]']
     results = pd.DataFrame(columns=['target_name','rmse_test','rmse_train','rmse_awcc_test','rmse_awcc_train','n_estimators','max_depth','max_features','time'])
 
     results = pd.read_csv(path / 'hyperparameter_tuning_results.csv')
@@ -87,7 +79,7 @@ def main():
     n_estimators_default = 100
 
 
-    target_name = 'u_x_real'
+    target_name = 'u_x_real [m/s]'
 
     results_tmp1 = results[(results['target_name'] == target_name)]
     default = results_tmp1[(results_tmp1['max_depth'].isna()) & (results_tmp1['max_features'] == max_features_default) & (results_tmp1['n_estimators'] == n_estimators_default)].reset_index(drop=True)
@@ -119,8 +111,7 @@ def main():
     a1.legend(labelspacing=0.2,fontsize=6)
     f1.tight_layout()
     a1.grid(which='major', axis='both')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.pdf')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.png')
+    f1.savefig(path / f'hyperparameter_tuning_{target_name.split()[0]}_{parameter}.jpg',dpi=1200)
 
 
     parameter = 'max_depth'
@@ -148,8 +139,7 @@ def main():
     a1.legend(labelspacing=0.2,fontsize=6)
     f1.tight_layout()
     a1.grid(which='major', axis='both')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.pdf')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.png')
+    f1.savefig(path / f'hyperparameter_tuning_{target_name.split()[0]}_{parameter}.jpg',dpi=1200)
 
     parameter = 'max_features'
     results_tmp2 = results_tmp1[(results_tmp1['n_estimators'] == n_estimators_default) & (results_tmp1['max_depth'].isna())]
@@ -175,10 +165,9 @@ def main():
     a1.legend(labelspacing=0.2,fontsize=6)
     f1.tight_layout()
     a1.grid(which='major', axis='both')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.pdf')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.png')
+    f1.savefig(path / f'hyperparameter_tuning_{target_name.split()[0]}_{parameter}.jpg',dpi=1200)
 
-    target_name = 'T_ux_real'
+    target_name = 'T_ux_real [-]'
 
     results_tmp1 = results[(results['target_name'] == target_name)]
     default = results_tmp1[(results_tmp1['max_depth'].isna()) & (results_tmp1['max_features'] == max_features_default) & (results_tmp1['n_estimators'] == n_estimators_default)].reset_index(drop=True)
@@ -210,8 +199,7 @@ def main():
     a1.legend(labelspacing=0.2,fontsize=6)
     f1.tight_layout()
     a1.grid(which='major', axis='both')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.pdf')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.png')
+    f1.savefig(path / f'hyperparameter_tuning_{target_name.split()[0]}_{parameter}.jpg',dpi=1200)
 
 
     parameter = 'max_depth'
@@ -239,8 +227,7 @@ def main():
     a1.legend(labelspacing=0.2,fontsize=6)
     f1.tight_layout()
     a1.grid(which='major', axis='both')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.pdf')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.png')
+    f1.savefig(path / f'hyperparameter_tuning_{target_name.split()[0]}_{parameter}.jpg',dpi=1200)
 
     parameter = 'max_features'
     results_tmp2 = results_tmp1[(results_tmp1['n_estimators'] == n_estimators_default) & (results_tmp1['max_depth'].isna())]
@@ -266,8 +253,7 @@ def main():
     a1.legend(labelspacing=0.2,fontsize=6)
     f1.tight_layout()
     a1.grid(which='major', axis='both')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.pdf')
-    f1.savefig(path / f'hyperparameter_tuning_{target_name}_{parameter}.png')
+    f1.savefig(path / f'hyperparameter_tuning_{target_name.split()[0]}_{parameter}.jpg',dpi=1200)
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
     Further, the model leverages a large of dataset of more than
     19,000 simulations of phase-detection probe measurements produced
     with the Phase-Detection Probe Simulator for Turbulent Bubbly 
-    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim-tf.git).     
+    Flows (https://gitlab.ethz.ch/vaw/public/pdp-sim.git).     
 
 
     Copyright (c) 2024 ETH Zurich, Matthias Bürgler, Daniel Valero, Benjamin Hohermuth,
@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
     and Glaciology (VAW); Chair of hydraulic structures
 
 """
+DPI = 1200
 plt.rcParams['font.family'] = 'Times New Roman'
 plt.rcParams['font.sans-serif'] = ['Computer Modern Roman']
 plt.rcParams['font.size'] = 9

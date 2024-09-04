@@ -37,7 +37,7 @@ To install pdp-uq, follow these steps:
     cd pdp-uq
     ```
 
-We recommend running pdp-uq in a virtual python environment using pipenv. The installation of pipenv is described in the [documentation](docs/user/setup_python_environment.md).
+We recommend running pdp-uq in a virtual python environment using pipenv. The installation of pipenv is described in the [documentation](docs/python_env/setup_python_environment.md).
 
 3. Install the required dependencies using pipenv:
 
@@ -101,7 +101,7 @@ python3 tools/plot_results.py example/pdp_data_uq.csv
 
 This produces the following figure:
 
-![Corrected mean velocitiy and turbulence intensity profile, including median values, the interquartile range (IQR) and the 90% confidence interval (CI).](/docs/application_example/profiles_uq.png?raw=true)
+![Corrected mean velocitiy and turbulence intensity profile, including median values, the interquartile range (IQR) and the 90% confidence interval (CI).](/docs/application_example/profiles_uq.jpg?raw=true)
 
 **Figure 1:** Corrected mean velocitiy and turbulence intensity profile, including median values, the interquartile range (IQR) and the 90% confidence interval (CI).
 
