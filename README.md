@@ -134,21 +134,20 @@ Bürgler, M., Valero, D., Hohermuth, B., Boes, R. M., &  Vetsch, D. F. 2024a. Da
 Bürgler M., Valero D., Hohermuth B., Boes R.M., Vetsch D.F. 2024b.
 Phase-detection probe simulator for turbulent bubbly flows. ETH Zurich. https://gitlab.ethz.ch/vaw/public/pdp-sim-tbf
 
-Bürgler, M., Valero, D., Hohermuth, B., Boes, R.M., & Vetsch, D.F. 2024c. Uncertainties in measurements of bubbly flows using phase-detection probes. *International Journal of Multiphase Flow*. (in Press). https://doi.org/10.1016/j.ijmultiphaseflow.2024.104978
+Bürgler, M., Valero, D., Hohermuth, B., Boes, R.M., & Vetsch, D.F. 2024c. Uncertainties in measurements of bubbly flows using phase-detection probes. *International Journal of Multiphase Flow* 181, 104978. https://doi.org/10.1016/j.ijmultiphaseflow.2024.104978
 
-Kramer, M., Valero, D., Chanson, H., & Bung, D. B. (2019). Towards reliable turbulence estimations with phase-detection probes: an adaptive window cross-correlation technique. *Experiments in Fluids*, 60(1), 2. https://doi.org/10.1007/s00348-018-2650-9
+Kramer, M., Valero, D., Chanson, H., & Bung, D. B. 2019. Towards reliable turbulence estimations with phase-detection probes: an adaptive window cross-correlation technique. *Experiments in Fluids*, 60(1), 2. https://doi.org/10.1007/s00348-018-2650-9
 
-Kramer, M., Hohermuth, B., Valero, D., & Felder, S. (2020). Best practices for velocity estimations in highly aerated flows with dual-tip phase-detection probes. *International Journal of Multiphase Flow*, 126, 103228. https://doi.org/10.1016/j.ijmultiphaseflow.2020.103228
+Kramer, M., Hohermuth, B., Valero, D., & Felder, S. 2020. Best practices for velocity estimations in highly aerated flows with dual-tip phase-detection probes. *International Journal of Multiphase Flow*, 126, 103228. https://doi.org/10.1016/j.ijmultiphaseflow.2020.103228
 
-Meinshausen, N., & Ridgeway, G. (2006). Quantile regression forests. *Journal of Machine Learning Research*, 7(6). http://refhub.elsevier.com/S0169-2070(21)00175-8/sb1378
+Meinshausen, N., & Ridgeway, G. 2006. Quantile regression forests. *Journal of Machine Learning Research*, 7(6). http://refhub.elsevier.com/S0169-2070(21)00175-8/sb1378
 
-Johnson, R. A. (2024). quantile-forest: A Python Package for Quantile Regression Forests. *Journal of Open Source Software*, 9(93), 5976. https://doi.org/10.21105/joss.05976
+Johnson, R. A. 2024. quantile-forest: A Python Package for Quantile Regression Forests. *Journal of Open Source Software*, 9(93), 5976. https://doi.org/10.21105/joss.05976
 
 
 ## Citation
 
 If you use this package in academic work, please consider citing our work:
-
 
 Bürgler M., Valero D., Hohermuth B., Boes R.M., Vetsch D.F. 2024.
 Phase-detection probe simulator for turbulent bubbly flows. ETH Zurich. https://gitlab.ethz.ch/vaw/public/pdp-sim-tbf
