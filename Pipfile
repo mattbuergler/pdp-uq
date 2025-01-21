@@ -9,6 +9,8 @@ numpy = "*"
 pandas = "*"
 quantile-forest = "*"
 matplotlib = "*"
+requests = "*"
+
 
 [dev-packages]
 
