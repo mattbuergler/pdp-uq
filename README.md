@@ -7,6 +7,8 @@ The regression model is based on a quantile regression forest model ([Meinshause
 Further, the model leverages a large of dataset of more than 19,000 simulations of phase-detection probe measurements ([Büergler et al. 2024a](#references)) produced with the [Phase-Detection Probe Simulator for Turbulent Bubbly Flows](https://gitlab.ethz.ch/vaw/public/pdp-sim.git) ([Bürgler et al. 2024b](#references)). 
 
 
+![Model predictions of mean velocities (a–b) and turbulence intensities (c–d) for the training and testing subsets. Mean velocities (b) and turbulence intensities (d) estimations resulting from the AWCC algorithm for the testing subset are presented for comparison.](/docs/validation/regression_model_validation.jpg?raw=true)
+
 ## Getting Started
 
 ### Prerequisites
