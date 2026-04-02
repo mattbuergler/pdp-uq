@@ -96,10 +96,10 @@ python3 regression_model.py -dx 0.00452 -dy 0.00092 -Np 10 example/pdp_data.csv
 
 The corrected mean velocites and turbulent intensities are written to the file `example/pdp_data_uq.csv`.
 
-The [measurement](example/pdp_data.csv) contain an additional column for the invert-normal distance 'z [m]'. This allows to visuzalize the results with the python script [tools/plot_results.py](tools/plot_results.py): 
+The [measurement](example/pdp_data.csv) contain an additional column for the invert-normal distance 'z [m]'. This allows to visuzalize the results with the python script [example/plot_results.py](example/plot_results.py): 
 
 ```
-python3 tools/plot_results.py example/pdp_data_uq.csv
+python3 example/plot_results.py example/pdp_data_uq.csv
 ```
 
 This produces the following figure:

@@ -143,7 +143,6 @@ def main():
     t0 = time.time()
 
     fig, axs = plt.subplots(2, 2, figsize=(6.5,5.5))
-    # fig.subplots_adjust(hspace=0.4, wspace=0.4)
 
     tar_train, pred_train, tar_test, pred_test, pred_awcc_test, rmse_test, rmse_train, rmse_awcc_test, rmse_awcc_train = train_model('u_x_real [m/s]','u_x_awcc [m/s]')
     min_val = 0.0
@@ -153,13 +152,12 @@ def main():
     axs[0,0].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[0,0].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[0,0].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
-    axs[0,0].set_xlabel('$\overline{u}_{x,real}$ [m s$^{-1}$]')
-    axs[0,0].set_ylabel('$\overline{u}_{x,pred}$ [m s$^{-1}$]')
+    axs[0,0].set_xlabel(r'$\overline{u}_{x,\mathrm{real}}$ [m s$^{-1}$]')
+    axs[0,0].set_ylabel(r'$\overline{u}_{x,\mathrm{Model}}$ [m s$^{-1}$]')
     axs[0,0].grid(True)
     axs[0,0].set_xlim([min_val,max_val])
     axs[0,0].set_ylim([min_val,max_val])
-    axs[0,0].text(0.05*max_val,0.95*max_val,f'$\mathbf{{Training}}$\n$RMSE_{{pred}}$ = {rmse_train:.2f} ms$^{{1}}$',verticalalignment='top')
-    # axs[0,0].legend(loc=4,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
+    axs[0,0].text(0.05*max_val,0.95*max_val,r'$\mathbf{Training}$'+'\n'+r'$\mathrm{RMSE}_{\mathrm{Model}}$ = '+f'{rmse_train:.2f} m s$^{{-1}}$',verticalalignment='top')
     axs[0,0].annotate('(a)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
 
@@ -168,14 +166,12 @@ def main():
     axs[0,1].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[0,1].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[0,1].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
-    axs[0,1].set_xlabel('$\overline{u}_{x,real}$ [m s$^{-1}$]')
-    axs[0,1].set_ylabel('$\overline{u}_{x,awcc}$ or $\overline{u}_{x,pred}$ [m s$^{-1}$]')
+    axs[0,1].set_xlabel(r'$\overline{u}_{x,\mathrm{real}}$ [m s$^{-1}$]')
+    axs[0,1].set_ylabel(r'$\overline{u}_{x,\mathrm{AWCC}}$ or $\overline{u}_{x,\mathrm{Model}}$ [m s$^{-1}$]')
     axs[0,1].set_xlim([min_val,max_val])
     axs[0,1].set_ylim([min_val,max_val])
-    axs[0,1].text(0.05*max_val,0.95*max_val,f'$\mathbf{{Testing}}$\n$RMSE_{{pred}}$ = {rmse_test:.2f} ms$^{{1}}$\n$RMSE_{{awcc}}$ = {rmse_awcc_test:.2f} ms$^{{1}}$',verticalalignment='top')
-    # axs[0,1].text(0.1*max_val,0.8*max_val,f'')
+    axs[0,1].text(0.05*max_val,0.95*max_val,r'$\mathbf{Testing}$'+'\n'+r'$\mathrm{RMSE}_{\mathrm{Model}}$ = '+f'{rmse_test:.2f} m s$^{{-1}}$\n'+r'$\mathrm{RMSE}_{\mathrm{AWCC}}$ = '+f'{rmse_awcc_test:.2f} m s$^{{-1}}$',verticalalignment='top')
     axs[0,1].grid(True)
-    # axs[0,1].legend(loc=4,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
     axs[0,1].annotate('(b)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
 
@@ -186,13 +182,12 @@ def main():
     axs[1,0].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[1,0].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[1,0].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
-    axs[1,0].set_xlabel('$\mathrm{T}_{u,x,real}$ [-]')
-    axs[1,0].set_ylabel('$\mathrm{T}_{u,x,pred}$ [-]')
+    axs[1,0].set_xlabel('$\mathrm{T}_{u,x,\mathrm{real}}$ [-]')
+    axs[1,0].set_ylabel('$\mathrm{T}_{u,x,\mathrm{Model}}$ [-]')
     axs[1,0].grid(True)
     axs[1,0].set_xlim([min_val,max_val])
     axs[1,0].set_ylim([min_val,0.8])
-    axs[1,0].text(0.05*max_val,0.95*0.8,f'$\mathbf{{Training}}$\n$RMSE_{{pred}}$ = {rmse_train:.3f}',verticalalignment='top')
-    # axs[1,0].legend(loc=1,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
+    axs[1,0].text(0.05*max_val,0.95*0.8,r'$\mathbf{Training}$'+'\n'+r'$\mathrm{RMSE}_{\mathrm{Model}}$ = '+f'{rmse_train:.3f}',verticalalignment='top')
     axs[1,0].annotate('(c)', xy=(0.95, 0.05), xycoords='axes fraction',
                            ha='right', va='bottom')
 
@@ -205,12 +200,11 @@ def main():
     axs[1,1].scatter([],[], alpha=0.8, c='red',label='AWCC')
     axs[1,1].plot([], [], 'k-', label='Perfect pred.')
     axs[1,1].plot([], [], 'k--', label='$\pm$ 10% Error')
-    axs[1,1].set_xlabel('$\mathrm{T}_{u,x,real}$ [-]')
-    axs[1,1].set_ylabel('$\mathrm{T}_{u,x,awcc}$ or $\mathrm{T}_{u,x,pred}$ [-]')
+    axs[1,1].set_xlabel(r'$\mathrm{T}_{u,x,\mathrm{real}}$ [-]')
+    axs[1,1].set_ylabel(r'$\mathrm{T}_{u,x,\mathrm{AWCC}}$ or $\mathrm{T}_{u,x,\mathrm{Model}}$ [-]')
     axs[1,1].set_xlim([min_val,max_val])
     axs[1,1].set_ylim([min_val,0.8])
-    axs[1,1].text(0.05*max_val,0.95*0.8,f'$\mathbf{{Testing}}$\n$RMSE_{{pred}}$ = {rmse_test:.3f}\n$RMSE_{{awcc}}$ = {rmse_awcc_test:.3f}',verticalalignment='top')
-    # axs[1,1].text(0.1*max_val,0.8*0.8,f'')
+    axs[1,1].text(0.05*max_val,0.95*0.8,r'$\mathbf{Testing}$'+'\n'+r'$\mathrm{RMSE}_{\mathrm{Model}}$ = '+f'{rmse_test:.3f}\n'+r'$\mathrm{RMSE}_{\mathrm{AWCC}}$ = '+f'{rmse_awcc_test:.3f}',verticalalignment='top')
     axs[1,1].grid(True)
     axs[1,1].legend(loc=1,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
     axs[1,1].annotate('(d)', xy=(0.95, 0.05), xycoords='axes fraction',
@@ -220,7 +214,6 @@ def main():
 
 
     fig, axs = plt.subplots(1, 2, figsize=(6.5,3))
-    # fig.subplots_adjust(hspace=0.4, wspace=0.4)
 
     tar_train, pred_train, tar_test, pred_test, pred_awcc_test, rmse_test, rmse_train, rmse_awcc_test, rmse_awcc_train = train_model('u_x_real [m/s]','u_x_awcc [m/s]')
     min_val = 0.0
@@ -231,11 +224,11 @@ def main():
     axs[0].plot([min_val, max_val], [min_val, max_val], 'k-', label='Perfect pred.')
     axs[0].plot([min_val, max_val], [1.1*min_val, 1.1*max_val], 'k--', label='$\pm$ 10% Error')
     axs[0].plot([min_val, max_val], [0.9*min_val, 0.9*max_val], 'k--')
-    axs[0].set_xlabel('$\overline{u}_{x,real}$ [m s$^{-1}$]')
-    axs[0].set_ylabel('$\overline{u}_{x,awcc}$ or $\overline{u}_{x,pred}$ [m s$^{-1}$]')
+    axs[0].set_xlabel(r'$\overline{u}_{x,\mathrm{real}}$ [m s$^{-1}$]')
+    axs[0].set_ylabel(r'$\overline{u}_{x,\mathrm{AWCC}}$ or $\overline{u}_{x,\mathrm{pred}}$ [m s$^{-1}$]')
     axs[0].set_xlim([min_val,max_val])
     axs[0].set_ylim([min_val,max_val])
-    axs[0].text(0.05*max_val,0.95*max_val,f'$\mathbf{{Testing}}$\n$RMSE_{{pred}}$ = {rmse_test:.2f} ms$^{{1}}$\n$RMSE_{{awcc}}$ = {rmse_awcc_test:.2f} ms$^{{1}}$',verticalalignment='top')
+    axs[0].text(0.05*max_val,0.95*max_val,r'$\mathbf{Testing}$\n$\mathrm{RMSE}_{\mathrm{pred}}$ ='+f' {rmse_test:.2f} ms$^{{-1}}$\n$'+r'\mathrm{RMSE}_{\mathrm{AWCC}}$ = '+f'{rmse_awcc_test:.2f} ms$^{{-1}}$',verticalalignment='top')
     # axs[0].text(0.1*max_val,0.8*max_val,f'')
     axs[0].grid(True)
     # axs[0].legend(loc=4,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
@@ -251,11 +244,11 @@ def main():
     axs[1].scatter([],[], alpha=1.0, c='red',label='AWCC')
     axs[1].plot([], [], 'k-', label='Perfect pred.')
     axs[1].plot([], [], 'k--', label='$\pm$ 10% Error')
-    axs[1].set_xlabel('$\mathrm{T}_{u,x,real}$ [-]')
-    axs[1].set_ylabel('$\mathrm{T}_{u,x,awcc}$ or $\mathrm{T}_{u,x,pred}$ [-]')
+    axs[1].set_xlabel(r'$\mathrm{T}_{u,x,\mathrm{real}}$ [-]')
+    axs[1].set_ylabel(r'$\mathrm{T}_{u,x,\mathrm{AWCC}}$ or $\mathrm{T}_{u,x,\mathrm{pred}}$ [-]')
     axs[1].set_xlim([min_val,max_val])
     axs[1].set_ylim([min_val,0.8])
-    axs[1].text(0.05*max_val,0.95*0.8,f'$\mathbf{{Testing}}$\n$RMSE_{{pred}}$ = {rmse_test:.3f}\n$RMSE_{{awcc}}$ = {rmse_awcc_test:.3f}',verticalalignment='top')
+    axs[1].text(0.05*max_val,0.95*0.8,r'$\mathbf{Testing}$\n$\mathrm{RMSE}_{\mathrm{pred}}$ = '+f'{rmse_test:.3f}\n'+r'$\mathrm{RMSE}_{\mathrm{AWCC}}$ = '+f'{rmse_awcc_test:.3f}',verticalalignment='top')
     # axs[1].text(0.1*max_val,0.8*0.8,f'')
     axs[1].grid(True)
     axs[1].legend(loc=1,frameon=True,edgecolor='k',fancybox='False',facecolor='w')
