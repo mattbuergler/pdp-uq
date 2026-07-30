@@ -101,3 +101,10 @@ uv run dvc repro prepare split
 The DOI, download endpoint, archive member, expected shape, and digest live in
 `artifacts/manifest.json`. DVC records the content identity and downstream
 lineage in `dvc.lock`; it is not the canonical publisher of the dataset.
+
+## Unpublished expanded backup
+
+The larger 19,649-row CSV formerly stored in Git is preserved separately under
+`data/archive/` with its own checksum, DVC pointer, and provenance manifest.
+It is a local unpublished backup and is deliberately excluded from the active
+training pipeline until it receives a versioned Research Collection record.
