@@ -1,0 +1,24 @@
+[data]
+minimum_awcc_windows = 100
+outlier_policy = "flag"
+
+[split]
+random_seed = 0
+test_fraction = 0.20
+cross_validation_folds = 5
+
+[search]
+# The paper used 300 randomized-search iterations. Override this in smoke tests.
+iterations = 300
+n_jobs = -1
+
+[model]
+random_seed = 0
+n_estimators = 100
+max_depth = 12
+max_features = 1.0
+n_jobs = -1
+
+[prediction]
+quantiles = [0.025, 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95, 0.975]
+

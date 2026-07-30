@@ -1,0 +1,14 @@
+stages:
+  tune:
+    cmd: >-
+      uv run --locked pdp-uq tune data/processed/training.csv
+      --split artifacts/splits.json
+      --output artifacts/tuning.json
+      --config configs/model.toml
+    deps:
+      - artifacts/splits.json
+      - configs/model.toml
+      - data/processed/training.csv
+      - src/pdp_uq
+    outs:
+      - artifacts/tuning.json
