@@ -2,9 +2,11 @@
 
 ## Environment
 
-The project supports CPython 3.11 through 3.14. `uv.lock` pins the complete
-cross-platform dependency graph; the model metadata records the exact packages
-used to serialize release artifacts.
+The project supports CPython 3.11 through 3.14. `.python-version` selects 3.11
+as the stable default for local reproduction, while CI exercises every
+supported minor version. `uv.lock` pins the complete cross-platform dependency
+graph; the model metadata records the exact packages used to serialize release
+artifacts.
 
 ```bash
 uv sync --locked --all-extras

@@ -12,7 +12,6 @@ htmlcov/
 # Environments and local tooling
 .venv/
 .uv-cache/
-.python-version
 .env
 .env.*
 !.env.example
