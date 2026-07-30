@@ -9,17 +9,17 @@ stages:
       size: 918
     - path: src/pdp_uq
       hash: md5
-      md5: d9d11583edbcdb54e61814c02affbf6e.dir
-      size: 131062
-      nfiles: 24
+      md5: 73ade0b5304070136a3854fdc4a854c5.dir
+      size: 49988
+      nfiles: 12
     outs:
     - path: data/simulation_results.csv
       hash: md5
       md5: 7a35421047585e3e0826321ca5b56b9c
       size: 21144397
   prepare:
-    cmd: uv run --locked pdp-uq data prepare data/simulation_results.csv
-      --output data/processed/training.csv --report
+    cmd: uv run --locked pdp-uq data prepare data/simulation_results.csv 
+      --output data/processed/training.csv --report 
       reports/generated/data_validation.json --config configs/model.toml
     deps:
     - path: configs/model.toml
@@ -32,9 +32,9 @@ stages:
       size: 21144397
     - path: src/pdp_uq
       hash: md5
-      md5: d9d11583edbcdb54e61814c02affbf6e.dir
-      size: 131062
-      nfiles: 24
+      md5: 73ade0b5304070136a3854fdc4a854c5.dir
+      size: 49988
+      nfiles: 12
     outs:
     - path: data/processed/training.csv
       hash: md5
@@ -45,7 +45,7 @@ stages:
       md5: 1c4633abd9a7d8f24b2a9f66d3307dc9
       size: 1806
   split:
-    cmd: uv run --locked pdp-uq split data/processed/training.csv --output
+    cmd: uv run --locked pdp-uq split data/processed/training.csv --output 
       artifacts/splits.json --config configs/model.toml
     deps:
     - path: configs/model.toml
@@ -58,17 +58,17 @@ stages:
       size: 3323836
     - path: src/pdp_uq
       hash: md5
-      md5: d9d11583edbcdb54e61814c02affbf6e.dir
-      size: 131062
-      nfiles: 24
+      md5: 73ade0b5304070136a3854fdc4a854c5.dir
+      size: 49988
+      nfiles: 12
     outs:
     - path: artifacts/splits.json
       hash: md5
       md5: 868430c89e95fe26bc791590f26d5283
       size: 199103
   evaluate:
-    cmd: uv run --locked pdp-uq evaluate data/processed/training.csv --split
-      artifacts/splits.json --metrics reports/generated/metrics.json --figure
+    cmd: uv run --locked pdp-uq evaluate data/processed/training.csv --split 
+      artifacts/splits.json --metrics reports/generated/metrics.json --figure 
       reports/generated/validation.png --config configs/model.toml
     deps:
     - path: artifacts/splits.json
@@ -85,9 +85,9 @@ stages:
       size: 3323836
     - path: src/pdp_uq
       hash: md5
-      md5: d9d11583edbcdb54e61814c02affbf6e.dir
-      size: 131062
-      nfiles: 24
+      md5: 73ade0b5304070136a3854fdc4a854c5.dir
+      size: 49988
+      nfiles: 12
     outs:
     - path: reports/generated/metrics.json
       hash: md5
@@ -98,7 +98,7 @@ stages:
       md5: 58804a43496364345b2bd90c805c5bca
       size: 635380
   train:
-    cmd: uv run --locked pdp-uq train data/processed/training.csv --model-dir
+    cmd: uv run --locked pdp-uq train data/processed/training.csv --model-dir 
       data --metadata data/model_metadata.json --config configs/model.toml
     deps:
     - path: configs/model.toml
@@ -111,9 +111,9 @@ stages:
       size: 3323836
     - path: src/pdp_uq
       hash: md5
-      md5: d9d11583edbcdb54e61814c02affbf6e.dir
-      size: 131062
-      nfiles: 24
+      md5: 73ade0b5304070136a3854fdc4a854c5.dir
+      size: 49988
+      nfiles: 12
     outs:
     - path: data/qrf_model_T_ux.joblib
       hash: md5
