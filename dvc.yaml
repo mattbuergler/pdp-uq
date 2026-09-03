@@ -1,0 +1,68 @@
+stages:
+  fetch:
+    cmd: uv run --locked pdp-uq data fetch --manifest artifacts/manifest.json
+    deps:
+      - artifacts/manifest.json
+      - src/pdp_uq
+    outs:
+      - data/simulation_results.csv
+
+  prepare:
+    cmd: >-
+      uv run --locked pdp-uq data prepare data/simulation_results.csv
+      --output data/processed/training.csv
+      --report reports/generated/data_validation.json
+      --config configs/model.toml
+    deps:
+      - configs/model.toml
+      - data/simulation_results.csv
+      - src/pdp_uq
+    outs:
+      - data/processed/training.csv
+    metrics:
+      - reports/generated/data_validation.json:
+          cache: false
+
+  split:
+    cmd: >-
+      uv run --locked pdp-uq split data/processed/training.csv
+      --output artifacts/splits.json
+      --config configs/model.toml
+    deps:
+      - configs/model.toml
+      - data/processed/training.csv
+      - src/pdp_uq
+    outs:
+      - artifacts/splits.json
+
+  evaluate:
+    cmd: >-
+      uv run --locked pdp-uq evaluate data/processed/training.csv
+      --split artifacts/splits.json
+      --metrics reports/generated/metrics.json
+      --figure reports/generated/validation.png
+      --config configs/model.toml
+    deps:
+      - artifacts/splits.json
+      - configs/model.toml
+      - data/processed/training.csv
+      - src/pdp_uq
+    metrics:
+      - reports/generated/metrics.json:
+          cache: false
+    plots:
+      - reports/generated/validation.png
+
+  train:
+    cmd: >-
+      uv run --locked pdp-uq train data/processed/training.csv
+      --model-dir data
+      --metadata data/model_metadata.json
+      --config configs/model.toml
+    deps:
+      - configs/model.toml
+      - data/processed/training.csv
+      - src/pdp_uq
+    outs:
+      - data/qrf_model_u_x.joblib
+      - data/qrf_model_T_ux.joblib

@@ -1,0 +1,24 @@
+{
+  "status": "unpublished_backup",
+  "source_commit": "d788999481db0dfefffe52ea9be204fd0fdaaaae",
+  "artifact": {
+    "path": "data/archive/simulation_results_git_d788999.csv",
+    "sha256": "47424517229feaa420d89823b79ab83ac7774fa67196b5b6e27faf4d83a1dcc6",
+    "rows": 19649,
+    "columns": 66
+  },
+  "active_dataset": {
+    "doi": "10.3929/ethz-b-000664463",
+    "path": "data/simulation_results.csv",
+    "sha256": "62442b127713e48113a22042a4894aee181ae497e59618437c23ea1ee210c143",
+    "rows": 19617,
+    "columns": 65
+  },
+  "differences": {
+    "additional_rows": 32,
+    "additional_training_eligible_rows": 31,
+    "additional_columns": [
+      "u_rms_x_awcc [m/s]"
+    ]
+  }
+}

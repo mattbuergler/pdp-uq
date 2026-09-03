@@ -1,0 +1,50 @@
+{
+  "environment": {
+    "joblib": "1.5.3",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "quantile-forest": "1.4.2",
+    "scikit-learn": "1.9.0",
+    "scipy": "1.17.1"
+  },
+  "features": [
+    "u [m/s]",
+    "T_u [-]",
+    "c [-]",
+    "d_32a [m]",
+    "delta_x [m]",
+    "delta_y [m]",
+    "N_p [-]"
+  ],
+  "models": {
+    "qrf_model_T_ux.joblib": {
+      "parameters": {
+        "max_depth": 12,
+        "max_features": 1.0,
+        "n_estimators": 100,
+        "n_jobs": -1,
+        "random_state": 0
+      },
+      "sha256": "d88bef4768aeb9fda943b04c5000d6a28ab1196b2d459ef8680217d42049e1bd",
+      "target": "T_ux_real [-]"
+    },
+    "qrf_model_u_x.joblib": {
+      "parameters": {
+        "max_depth": 12,
+        "max_features": 1.0,
+        "n_estimators": 100,
+        "n_jobs": -1,
+        "random_state": 0
+      },
+      "sha256": "72e11c0744bc0974c042cb3df5c1f5130021b4ad58442ea6ecc99cf4259fa351",
+      "target": "u_x_real [m/s]"
+    }
+  },
+  "schema_version": 1,
+  "source_commit": "recorded-by-dvc",
+  "training_data": {
+    "path": "data\\processed\\training.csv",
+    "rows": 19048,
+    "sha256": "d0a4c89d2fe99a9e3ece6234636cb2c86a054137d570ec95ae8a54f1faf21900"
+  }
+}

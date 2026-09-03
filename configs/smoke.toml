@@ -1,0 +1,23 @@
+[data]
+minimum_awcc_windows = 100
+outlier_policy = "flag"
+
+[split]
+random_seed = 0
+test_fraction = 0.20
+cross_validation_folds = 2
+
+[search]
+iterations = 2
+n_jobs = 1
+
+[model]
+random_seed = 0
+n_estimators = 3
+max_depth = 4
+max_features = 1.0
+n_jobs = 1
+
+[prediction]
+quantiles = [0.05, 0.50, 0.95]
+

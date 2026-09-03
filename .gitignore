@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Environments and local tooling
+.venv/
+.uv-cache/
+.env
+.env.*
+!.env.example
+
+# Build outputs
+build/
+dist/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# DVC-managed artifacts
+/data/simulation_results.csv
+/data/qrf_model_u_x.joblib
+/data/qrf_model_T_ux.joblib
+/data/processed/
+/artifacts/models/
+/artifacts/splits.json
+/artifacts/tuning.json
+/reports/generated/
+/tmp/
+/dvc-repro.*.log
+
+# Temporary downloads
+*.part
+*.zip

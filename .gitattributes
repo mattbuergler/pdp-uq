@@ -1,0 +1,11 @@
+* text=auto eol=lf
+
+*.jpg binary
+*.joblib binary
+*.pdf binary
+*.png binary
+*.svg binary
+*.zip binary
+
+# DVC emits folded YAML command lines with significant trailing spaces.
+dvc.lock -whitespace

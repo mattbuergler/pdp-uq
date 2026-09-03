@@ -1,0 +1,103 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdp-uq"
+version = "1.1.0"
+description = "Bias correction and uncertainty quantification for phase-detection probe measurements"
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Matthias Bürgler" },
+  { name = "Daniel Valero" },
+  { name = "Benjamin Hohermuth" },
+  { name = "Robert M. Boes" },
+  { name = "David F. Vetsch" },
+]
+keywords = [
+  "uncertainty-quantification",
+  "quantile-regression",
+  "random-forest",
+  "scientific-machine-learning",
+  "multiphase-flow",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = [
+  "joblib>=1.4,<2",
+  "matplotlib>=3.9,<4",
+  "numpy>=2.2,<3",
+  "pandas>=2.2,<4",
+  "quantile-forest>=1.4.2,<2",
+  "requests>=2.32,<3",
+  "scikit-learn>=1.9,<2",
+  "scipy>=1.14,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.13,<2",
+  "pandas-stubs>=2.2,<4",
+  "pytest>=8.3,<9",
+  "pytest-cov>=6,<7",
+  "responses>=0.25,<1",
+  "ruff>=0.9,<1",
+  "types-requests>=2.32,<3",
+]
+pipeline = [
+  "dvc>=3.59,<4",
+]
+
+[project.scripts]
+pdp-uq = "pdp_uq.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mattbuergler/pdp-uq"
+Documentation = "https://github.com/mattbuergler/pdp-uq#readme"
+Issues = "https://github.com/mattbuergler/pdp-uq/issues"
+Publication = "https://doi.org/10.1016/j.ijmultiphaseflow.2024.104978"
+Dataset = "https://doi.org/10.3929/ethz-b-000664463"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdp_uq"]
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib --strict-markers --cov=pdp_uq --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["pdp_uq"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF", "S"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+packages = ["pdp_uq"]

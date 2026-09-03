@@ -1,0 +1,24 @@
+{
+  "dataset": {
+    "name": "Dataset for Uncertainties in Measurements of Bubbly Flows Using Phase-Detection Probes",
+    "doi": "10.3929/ethz-b-000664463",
+    "url": "https://www.research-collection.ethz.ch/server/api/core/bitstreams/4b7690e1-2de0-478c-875c-dd5f1ec97d32/content",
+    "archive_member": "simulation_results.csv",
+    "output": "data/simulation_results.csv",
+    "sha256": "62442b127713e48113a22042a4894aee181ae497e59618437c23ea1ee210c143",
+    "rows": 19617,
+    "columns": 65
+  },
+  "legacy_upstream_models": {
+    "mean_velocity": {
+      "path": "data/qrf_model_u_x.joblib",
+      "sha256": "16037cb9c8a5a84d12aabff3d1f14a6ef7fb6c7d584e3acbca605b447a7e57bb",
+      "scikit_learn": "1.6.0"
+    },
+    "turbulence_intensity": {
+      "path": "data/qrf_model_T_ux.joblib",
+      "sha256": "6761ee38507a44c0fde13445cd86442e684e2a187ffb80afaa28078e232c6530",
+      "scikit_learn": "1.6.0"
+    }
+  }
+}
