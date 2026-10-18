@@ -5,6 +5,8 @@ probe measurements processed with Adaptive Window Cross-Correlation (AWCC).
 The project packages the quantile-regression-forest model published with
 Bürgler et al. (2024) and provides a reproducible path from the immutable
 simulation dataset to evaluated model artifacts.
+The companion [PDP-SIM](https://github.com/mattbuergler/pdp-simulator)
+repository covers the synthetic probe measurement workflow.
 
 [![CI](https://github.com/mattbuergler/pdp-uq/actions/workflows/ci.yml/badge.svg)](https://github.com/mattbuergler/pdp-uq/actions/workflows/ci.yml)
 [![Python 3.11-3.14](https://img.shields.io/badge/python-3.11--3.14-3776AB.svg)](https://www.python.org/)
@@ -12,7 +14,22 @@ simulation dataset to evaluated model artifacts.
 [![Paper DOI](https://img.shields.io/badge/paper-10.1016%2Fj.ijmultiphaseflow.2024.104978-8c1d40.svg)](https://doi.org/10.1016/j.ijmultiphaseflow.2024.104978)
 [![Dataset DOI](https://img.shields.io/badge/data-10.3929%2Fethz--b--000664463-1f6f8b.svg)](https://doi.org/10.3929/ethz-b-000664463)
 
-![Predictions on the untouched 20% holdout](docs/validation/model_holdout_validation.png)
+## From a measured profile to uncertainty-aware estimates
+
+![Measured spillway profile: AWCC estimates, corrected medians, and predictive intervals](example/profiles_uq.png)
+
+The included [application example](example/) applies the model to a measured
+dual-tip probe profile from a gradually varied spillway flow. The black curves
+are the original AWCC estimates; the blue curves are corrected medians, with
+50% and 90% predictive intervals. The example is limited to the lower part of
+the profile, where air concentration is within the published application
+range. It illustrates how to *use* the model on measurements; it is not an
+independent accuracy test against known ground truth. See Fig. 9 and Section
+5.1 of the [paper](docs/Buergler_et_al_2024_Uncertainties.pdf).
+
+The [quick start](#quick-start) reproduces this profile from the included
+measurement CSV. The separate [holdout evaluation](#holdout-evaluation)
+quantifies performance on simulated cases that were not used for training.
 
 ## What the model delivers
 
@@ -24,6 +41,10 @@ Two quantile forests correct the AWCC estimates of:
 Each prediction includes the median, interquartile range, 90% interval, and
 additional tail quantiles. Rows outside the published application domain are
 flagged and receive no model prediction.
+
+## Holdout evaluation
+
+![Predictions on the untouched 20% holdout](docs/validation/model_holdout_validation.png)
 
 The current reproducible holdout run uses 15,238 training rows and 3,810 test
 rows. These results are generated from `dvc.lock`, not copied from the paper:
